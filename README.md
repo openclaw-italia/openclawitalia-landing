@@ -1,2 +1,2 @@
-# openclawitalia-landing
-Link hub ufficiale della community OpenClaw Italia.
+
+Aggiornato: 2026-02-07
