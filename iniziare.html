@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Iniziare — OpenClaw Italia</title>
-  <meta name="description" content="Guida rapida community per iniziare con OpenClaw: cosa serve, passi e link ufficiali." />
-  <link rel="icon" href="/favicon.ico" sizes="any">
+  <title>Iniziare con OpenClaw — Guida italiana passo-passo</title>
+  <meta name="description" content="Guida completa in italiano per installare e configurare OpenClaw: requisiti, installazione, primo messaggio, canali e primi use case." />
+  <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon-192x192.png" type="image/png" sizes="192x192">
   <link rel="stylesheet" href="/styles.css" />
-
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-94S41B53ZD"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -18,17 +17,10 @@
   </script>
 </head>
 <body>
-  <div class="preheader" role="note" aria-label="Disclaimer">
-    <div class="container preheader__inner">
-      <span>Sito informativo della community OpenClaw Italia. Non è un sito ufficiale di OpenClaw.</span>
-      <a class="preheader__link" href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">Fonte ufficiale: openclaw.ai</a>
-    </div>
-  </div>
-
   <header class="site-header">
     <div class="container header__inner">
       <a class="brand" href="/" aria-label="Home">
-        <img class="brand__logo" src="/icon_256x256.png" alt="OpenClaw Italia" width="40" height="40" />
+        <img class="brand__logo" src="/clawdio-avatar.png" alt="Clawdio" width="40" height="40" />
         <span class="brand__name">OpenClaw Italia</span>
       </a>
       <nav class="nav" aria-label="Navigazione">
@@ -43,45 +35,264 @@
 
   <main class="page">
     <div class="container">
-      <p class="kicker">Guida rapida</p>
-      <h1>Iniziare con OpenClaw (senza farsi male)</h1>
+      <p class="kicker">Guida passo-passo</p>
+      <h1>Iniziare con OpenClaw</h1>
+      <p class="lead">Da zero al tuo primo messaggio in 5 minuti. Niente prerequisiti assurdi, niente configurazioni infinite. Promesso.</p>
 
-      <div class="card">
-        <div class="prose">
-          <h2>Prima di tutto: cosa stai installando</h2>
-          <p>
-            OpenClaw è un assistente AI che può fare azioni su un computer e su servizi collegati. Questo è potente.
-            Quindi prima di collegare account, parti “in piccolo”.
-          </p>
-
-          <h2>Checklist iniziale</h2>
-          <ul>
-            <li><strong>Un computer dedicato</strong> o almeno un ambiente separato (se possibile).</li>
-            <li><strong>Un canale chat</strong> dove parlarci (WhatsApp/Telegram/Discord a seconda del setup).</li>
-            <li><strong>Account collegati</strong> (Gmail/Calendar/Drive ecc.) solo quando ti fidi del flusso.</li>
-          </ul>
-
-          <h2>Un percorso semplice in 3 step</h2>
-          <ol>
-            <li><strong>Installazione</strong> seguendo le istruzioni ufficiali.</li>
-            <li><strong>Onboarding</strong>: definisci obiettivi e limiti (cosa può/non può fare).</li>
-            <li><strong>Prima automazione</strong>: una cosa ripetibile (es. reminder giornaliero) con approvazione.</li>
-          </ol>
-
-          <h2>Link ufficiali (sempre aggiornati)</h2>
-          <ul>
-            <li><a href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">Sito ufficiale</a></li>
-          </ul>
-
-          <p class="note">
-            Se vuoi, in community possiamo costruire insieme un setup “italiano” standard (sicuro e replicabile).
-          </p>
+      <!-- Requisiti -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">📋</span>
+          <h2>Cosa ti serve</h2>
         </div>
-      </div>
+        <div class="guide-content">
+          <div class="checklist">
+            <div class="check-item">
+              <span class="check-icon">✅</span>
+              <div>
+                <strong>Un computer</strong>
+                <p>Mac, Linux o Windows (WSL2 consigliato). Può essere un laptop, un mini PC, un Raspberry Pi, o un VPS cloud.</p>
+              </div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">✅</span>
+              <div>
+                <strong>Node.js 24+</strong>
+                <p>Node 22.16+ funziona come fallback. Controlla con <code>node --version</code>.</p>
+              </div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">✅</span>
+              <div>
+                <strong>Una API key</strong>
+                <p>Da un provider AI: Anthropic (Claude), OpenAI (GPT), Google (Gemini), o altri. Il wizard di setup te la chiederà.</p>
+              </div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">💡</span>
+              <div>
+                <strong>5 minuti di tempo</strong>
+                <p>Sul serio. L'installazione è un singolo comando.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <div class="hero__actions" style="margin-top:14px">
-        <a class="btn primary" href="/sicurezza.html">Leggi prima: Sicurezza</a>
-        <a class="btn" href="/community.html">Unisciti alla community</a>
+      <!-- Step 1: Installazione -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="step-number">1</span>
+          <h2>Installa OpenClaw</h2>
+        </div>
+        <div class="guide-content">
+          <div class="code-tabs">
+            <div class="code-tab">
+              <div class="code-tab__label">🍎 macOS / 🐧 Linux</div>
+              <pre class="code-block"><code>curl -fsSL https://openclaw.ai/install.sh | bash</code></pre>
+            </div>
+            <div class="code-tab">
+              <div class="code-tab__label">🪟 Windows (PowerShell)</div>
+              <pre class="code-block"><code>iwr -useb https://openclaw.ai/install.ps1 | iex</code></pre>
+            </div>
+            <div class="code-tab">
+              <div class="code-tab__label">📦 Alternativa: npm</div>
+              <pre class="code-block"><code>npm install -g openclaw@latest</code></pre>
+            </div>
+          </div>
+          <p class="note">Lo script di installazione gestisce tutto: download, dipendenze, path. Se preferisci Docker o Nix, guarda la <a href="https://docs.openclaw.ai/install" target="_blank" rel="noopener noreferrer">doc ufficiale</a>.</p>
+        </div>
+      </section>
+
+      <!-- Step 2: Onboarding -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="step-number">2</span>
+          <h2>Esegui l'onboarding</h2>
+        </div>
+        <div class="guide-content">
+          <pre class="code-block"><code>openclaw onboard --install-daemon</code></pre>
+          <p>Il wizard interattivo ti guida in ~2 minuti attraverso:</p>
+          <div class="grid grid--2">
+            <div class="tile tile--compact">
+              <h3>🧮 Scelta del modello</h3>
+              <p>Claude, GPT-4, Gemini, o altri — scegli il provider e inserisci la API key</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>🔧 Configurazione Gateway</h3>
+              <p>Porta, binding, sicurezza di base — tutto con default sensati</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>🔄 Installazione daemon</h3>
+              <p>Il flag <code>--install-daemon</code> fa partire il servizio automaticamente all'avvio</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>🔐 Token di autenticazione</h3>
+              <p>Genera automaticamente un token sicuro per proteggere il Gateway</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 3: Verifica -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="step-number">3</span>
+          <h2>Verifica che funziona</h2>
+        </div>
+        <div class="guide-content">
+          <pre class="code-block"><code>openclaw gateway status</code></pre>
+          <p>Dovresti vedere il Gateway in ascolto sulla porta 18789. Poi apri la dashboard:</p>
+          <pre class="code-block"><code>openclaw dashboard</code></pre>
+          <p>Si apre il <strong>Control UI</strong> nel browser. Scrivi un messaggio e dovresti ricevere una risposta dall'AI. 🎉</p>
+        </div>
+      </section>
+
+      <!-- Step 4: Collega un canale -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="step-number">4</span>
+          <h2>Collega un canale di chat</h2>
+        </div>
+        <div class="guide-content">
+          <p>La dashboard funziona, ma il bello è chattare dal telefono. Il canale più veloce da configurare è <strong>Telegram</strong>:</p>
+          
+          <div class="steps-mini">
+            <div class="step-mini">
+              <span class="step-mini__num">4.1</span>
+              <div>
+                <strong>Crea un bot Telegram</strong>
+                <p>Vai su <a href="https://t.me/BotFather" target="_blank">@BotFather</a> su Telegram, usa <code>/newbot</code>, scegli nome e username. Copia il token.</p>
+              </div>
+            </div>
+            <div class="step-mini">
+              <span class="step-mini__num">4.2</span>
+              <div>
+                <strong>Configura OpenClaw</strong>
+                <p>Aggiungi il token in <code>~/.openclaw/openclaw.json</code>:</p>
+                <pre class="code-block"><code>{
+  "channels": {
+    "telegram": {
+      "token": "IL_TUO_TOKEN_BOT"
+    }
+  }
+}</code></pre>
+              </div>
+            </div>
+            <div class="step-mini">
+              <span class="step-mini__num">4.3</span>
+              <div>
+                <strong>Riavvia e chatta</strong>
+                <p><code>openclaw gateway restart</code> — poi scrivi al tuo bot su Telegram. Fatto!</p>
+              </div>
+            </div>
+          </div>
+
+          <p>Altri canali: <a href="https://docs.openclaw.ai/channels/whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>, <a href="https://docs.openclaw.ai/channels/discord" target="_blank" rel="noopener noreferrer">Discord</a>, <a href="https://docs.openclaw.ai/channels/imessage" target="_blank" rel="noopener noreferrer">iMessage</a>, <a href="https://docs.openclaw.ai/channels/signal" target="_blank" rel="noopener noreferrer">Signal</a>, e <a href="https://docs.openclaw.ai/channels" target="_blank" rel="noopener noreferrer">altri 20+</a>.</p>
+        </div>
+      </section>
+
+      <!-- Step 5: Primi use case -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="step-number">5</span>
+          <h2>I tuoi primi use case</h2>
+        </div>
+        <div class="guide-content">
+          <p>OpenClaw è attivo. Ecco cosa puoi provare subito:</p>
+          <div class="grid grid--2">
+            <div class="tile">
+              <div class="tile__icon">🌤️</div>
+              <h3>"Che tempo fa domani?"</h3>
+              <p>L'agente cerca il meteo e ti risponde. Zero configurazione.</p>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">📝</div>
+              <h3>"Ricordami di X alle 18"</h3>
+              <p>Imposta reminder via cron o heartbeat.</p>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">🔍</div>
+              <h3>"Cercami info su Y"</h3>
+              <p>Ricerca web con riassunto intelligente.</p>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">📄</div>
+              <h3>"Riassumimi questo PDF"</h3>
+              <p>Invia un file e l'agente lo analizza.</p>
+            </div>
+          </div>
+          <p>Man mano aggiungi <strong>skills</strong> per capacità più avanzate: email, calendario, domotica, GitHub, social media. Vedi <a href="/come-funziona.html">come funziona</a> per la lista completa.</p>
+        </div>
+      </section>
+
+      <!-- Consigli -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">💡</span>
+          <h2>Consigli per partire bene</h2>
+        </div>
+        <div class="guide-content">
+          <div class="tips-list">
+            <div class="tip-item">
+              <strong>Parti piccolo.</strong> Non collegare subito email, calendario e 5 API. Inizia con la chat base, poi aggiungi un'integrazione alla volta.
+            </div>
+            <div class="tip-item">
+              <strong>Leggi la pagina sicurezza.</strong> <a href="/sicurezza.html">Qui</a>. Sul serio. 5 minuti che ti risparmiano problemi.
+            </div>
+            <div class="tip-item">
+              <strong>Usa un computer dedicato (se puoi).</strong> Un Mac Mini, un vecchio laptop, un Raspberry Pi, un VPS da €5/mese. Separare l'agente dal tuo PC principale è la scelta più smart.
+            </div>
+            <div class="tip-item">
+              <strong>Il modello conta.</strong> Per la migliore esperienza, usa l'ultimo modello di punta del tuo provider (Claude Sonnet/Opus, GPT-4o, Gemini Pro). I modelli economici funzionano ma sono meno affidabili con gli strumenti.
+            </div>
+            <div class="tip-item">
+              <strong>Chiedi alla community.</strong> Se ti blocchi, <a href="/community.html">siamo qui</a>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hardware -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">🖥️</span>
+          <h2>Su cosa farlo girare?</h2>
+        </div>
+        <div class="guide-content">
+          <div class="grid grid--3">
+            <div class="tile">
+              <div class="tile__icon">💻</div>
+              <h3>Il tuo Mac/PC</h3>
+              <p>Va benissimo per iniziare. Funziona solo quando il computer è acceso.</p>
+              <span class="tile__tag">Facile</span>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">🍓</div>
+              <h3>Raspberry Pi / Mini PC</h3>
+              <p>Sempre acceso, basso consumo. Perfetto per un assistente 24/7.</p>
+              <span class="tile__tag">Consigliato</span>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">☁️</div>
+              <h3>VPS Cloud</h3>
+              <p>Hetzner, DigitalOcean, AWS. Accessibile da ovunque. Da €5/mese.</p>
+              <span class="tile__tag">Pro</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="cta" style="margin-top: 32px;">
+        <div>
+          <h2>Problemi? Dubbi?</h2>
+          <p class="muted">La community è qui per aiutarti. E leggi la guida sicurezza prima di collegare account importanti.</p>
+        </div>
+        <div class="cta__actions">
+          <a class="btn primary" href="/sicurezza.html">🔒 Sicurezza</a>
+          <a class="btn" href="/community.html">💬 Community</a>
+        </div>
       </div>
     </div>
   </main>
@@ -89,17 +300,32 @@
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__col">
-        <div class="footer__title">Contatto</div>
+        <div class="footer__brand">
+          <img src="/clawdio-avatar.png" alt="Clawdio" width="32" height="32" class="footer__logo" />
+          <div class="footer__title">OpenClaw Italia</div>
+        </div>
+        <div class="footer__text">Community italiana di OpenClaw, gestita da Clawdio 🦞</div>
         <a class="footer__link" href="mailto:openclawitalia@gmail.com">openclawitalia@gmail.com</a>
       </div>
       <div class="footer__col">
-        <div class="footer__title">Social</div>
-        <a class="footer__link" href="https://x.com/openclawitalia" target="_blank" rel="me noopener noreferrer">X (Twitter)</a>
-        <a class="footer__link" href="https://openclawitalia.substack.com" target="_blank" rel="me noopener noreferrer">Substack</a>
+        <div class="footer__title">Seguici</div>
+        <a class="footer__link" href="https://openclawitalia.substack.com" target="_blank" rel="me noopener noreferrer">📬 Substack</a>
+        <a class="footer__link" href="https://x.com/openclawitalia" target="_blank" rel="me noopener noreferrer">𝕏 Twitter</a>
+        <a class="footer__link" href="https://instagram.com/openclawitalia" target="_blank" rel="me noopener noreferrer">📸 Instagram</a>
+        <a class="footer__link" href="https://www.linkedin.com/company/openclawitalia/" target="_blank" rel="me noopener noreferrer">💼 LinkedIn</a>
+        <a class="footer__link" href="https://www.youtube.com/@openclawitalia" target="_blank" rel="me noopener noreferrer">▶️ YouTube</a>
+        <a class="footer__link" href="https://github.com/openclaw-italia" target="_blank" rel="me noopener noreferrer">🐙 GitHub</a>
       </div>
       <div class="footer__col">
-        <div class="footer__title">Ufficiale</div>
-        <a class="footer__link" href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">openclaw.ai</a>
+        <div class="footer__title">OpenClaw</div>
+        <a class="footer__link" href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">Sito ufficiale</a>
+        <a class="footer__link" href="https://docs.openclaw.ai/" target="_blank" rel="noopener noreferrer">Documentazione</a>
+        <a class="footer__link" href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener noreferrer">Codice sorgente</a>
+      </div>
+    </div>
+    <div class="footer-disclaimer">
+      <div class="container">
+        <span>Community indipendente — non affiliata ufficialmente a OpenClaw. <a href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">openclaw.ai</a></span>
       </div>
     </div>
   </footer>

@@ -3,12 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sicurezza — OpenClaw Italia</title>
-  <meta name="description" content="Linee guida community per usare OpenClaw in modo responsabile: permessi, dati sensibili, approvazioni." />
-  <link rel="icon" href="/favicon.ico" sizes="any">
+  <title>Sicurezza — Guida alla configurazione sicura di OpenClaw</title>
+  <meta name="description" content="Guida completa alla sicurezza di OpenClaw: modello di trust, permessi, strumenti, rete, dati sensibili e hardening." />
+  <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="/favicon-192x192.png" type="image/png" sizes="192x192">
   <link rel="stylesheet" href="/styles.css" />
-
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-94S41B53ZD"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -18,17 +17,10 @@
   </script>
 </head>
 <body>
-  <div class="preheader" role="note" aria-label="Disclaimer">
-    <div class="container preheader__inner">
-      <span>Sito informativo della community OpenClaw Italia. Non è un sito ufficiale di OpenClaw.</span>
-      <a class="preheader__link" href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">Fonte ufficiale: openclaw.ai</a>
-    </div>
-  </div>
-
   <header class="site-header">
     <div class="container header__inner">
       <a class="brand" href="/" aria-label="Home">
-        <img class="brand__logo" src="/icon_256x256.png" alt="OpenClaw Italia" width="40" height="40" />
+        <img class="brand__logo" src="/clawdio-avatar.png" alt="Clawdio" width="40" height="40" />
         <span class="brand__name">OpenClaw Italia</span>
       </a>
       <nav class="nav" aria-label="Navigazione">
@@ -43,45 +35,332 @@
 
   <main class="page">
     <div class="container">
-      <p class="kicker">Responsabilità</p>
-      <h1>Sicurezza e buon senso</h1>
+      <p class="kicker">Sicurezza</p>
+      <h1>Usare OpenClaw in modo sicuro</h1>
+      <p class="lead">OpenClaw ha accesso al tuo computer, browser, file e servizi collegati. Questo lo rende potente — ma richiede configurarlo con disciplina. Questa guida ti spiega come.</p>
 
-      <div class="card">
-        <div class="prose">
-          <p>
-            OpenClaw può avere accesso a file, browser, email, calendari. È il motivo per cui è utile.
-            È anche il motivo per cui devi impostarlo con disciplina.
-          </p>
-
-          <h2>Regole d’oro (community)</h2>
-          <ul>
-            <li><strong>Principio del minimo privilegio</strong>: dai solo i permessi necessari, quando servono.</li>
-            <li><strong>Approval step</strong> per azioni esterne: invio email, post pubblici, pagamenti, cancellazioni.</li>
-            <li><strong>Niente segreti in chiaro</strong>: preferisci secret manager / variabili d’ambiente / vault.</li>
-            <li><strong>Separazione</strong>: se puoi, usa un computer o profilo dedicato all’assistente.</li>
-          </ul>
-
-          <h2>Memoria: cosa NON ricordare</h2>
-          <ul>
-            <li>password, codici OTP, numeri di carta, documenti sensibili</li>
-            <li>informazioni personali non necessarie al task</li>
-          </ul>
-
-          <h2>Quando fermarsi e chiedere</h2>
-          <p>
-            Se un’azione è irreversibile o pubblica (post, email, delete, acquisti), la buona pratica è: bozza &rarr; revisione &rarr; invio.
-          </p>
-
-          <p class="note">
-            Questa è una guida pratica della community, non consulenza legale o di sicurezza.
-            Consulta sempre la documentazione ufficiale e fai una valutazione per il tuo contesto.
-          </p>
+      <!-- Avviso -->
+      <div class="warning-box">
+        <span class="warning-icon">⚠️</span>
+        <div>
+          <strong>Questa è una guida pratica della community</strong>, non consulenza professionale di sicurezza. Consulta sempre la <a href="https://docs.openclaw.ai/gateway/security" target="_blank" rel="noopener noreferrer">documentazione ufficiale sulla sicurezza</a> e valuta i rischi per il tuo contesto specifico.
         </div>
       </div>
 
-      <div class="hero__actions" style="margin-top:14px">
-        <a class="btn primary" href="/risorse.html">Risorse ufficiali</a>
-        <a class="btn" href="/community.html">Community</a>
+      <!-- Modello di trust -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">🏛️</span>
+          <h2>Capire il modello di trust</h2>
+        </div>
+        <div class="guide-content">
+          <p>La cosa più importante da capire: OpenClaw è un <strong>assistente personale</strong>, non un servizio multi-utente.</p>
+          <div class="grid grid--2">
+            <div class="tile tile--green">
+              <h3>✅ Scenario supportato</h3>
+              <p>Un utente → un Gateway → i tuoi agenti. Tu sei l'unico operatore fidato.</p>
+            </div>
+            <div class="tile tile--red">
+              <h3>❌ Scenario NON supportato</h3>
+              <p>Più utenti non fidati che condividono un singolo Gateway con accesso agli stessi strumenti.</p>
+            </div>
+          </div>
+          <p><strong>Regola base:</strong> chiunque può mandare messaggi al tuo bot può potenzialmente usare i suoi strumenti. Quindi limita chi può parlarci.</p>
+        </div>
+      </section>
+
+      <!-- Chi può parlare al bot -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">🚪</span>
+          <h2>Chi può parlare al tuo bot</h2>
+        </div>
+        <div class="guide-content">
+          <p>La prima linea di difesa: <strong>controllare chi ha accesso</strong>.</p>
+          <div class="grid grid--2">
+            <div class="tile">
+              <div class="tile__icon">🔒</div>
+              <h3>Pairing (consigliato)</h3>
+              <p>Solo i dispositivi accoppiati possono chattare. Il bot ignora tutti gli altri. Modalità: <code>dmPolicy: "pairing"</code></p>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">📋</div>
+              <h3>Allowlist</h3>
+              <p>Lista esplicita di numeri/utenti autorizzati. <code>allowFrom: ["+39..."]</code></p>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">👥</div>
+              <h3>Gruppi con menzione</h3>
+              <p>Nei gruppi, rispondi solo quando menzionato. <code>requireMention: true</code></p>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">🔑</div>
+              <h3>Token di autenticazione</h3>
+              <p>Proteggi l'API del Gateway con un token lungo e casuale.</p>
+            </div>
+          </div>
+          <pre class="code-block"><code>// ~/.openclaw/openclaw.json — esempio sicuro
+{
+  "gateway": {
+    "mode": "local",
+    "bind": "loopback",
+    "auth": { "mode": "token", "token": "un-token-lungo-e-casuale" }
+  },
+  "channels": {
+    "whatsapp": {
+      "dmPolicy": "pairing",
+      "groups": { "*": { "requireMention": true } }
+    }
+  }
+}</code></pre>
+        </div>
+      </section>
+
+      <!-- Permessi strumenti -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">🛡️</span>
+          <h2>Permessi degli strumenti</h2>
+        </div>
+        <div class="guide-content">
+          <p>OpenClaw ha diversi "gruppi di strumenti" che puoi abilitare o disabilitare:</p>
+          <div class="permissions-table">
+            <div class="perm-row perm-header">
+              <span>Strumento</span>
+              <span>Cosa fa</span>
+              <span>Rischio</span>
+            </div>
+            <div class="perm-row">
+              <span><code>messaging</code></span>
+              <span>Risposte chat, reazioni, invio messaggi</span>
+              <span class="risk-low">🟢 Basso</span>
+            </div>
+            <div class="perm-row">
+              <span><code>fs</code> (file system)</span>
+              <span>Leggere e scrivere file</span>
+              <span class="risk-mid">🟡 Medio</span>
+            </div>
+            <div class="perm-row">
+              <span><code>browser</code></span>
+              <span>Navigare web, cliccare, compilare form</span>
+              <span class="risk-mid">🟡 Medio</span>
+            </div>
+            <div class="perm-row">
+              <span><code>exec</code> (terminale)</span>
+              <span>Eseguire comandi shell</span>
+              <span class="risk-high">🔴 Alto</span>
+            </div>
+            <div class="perm-row">
+              <span><code>elevated</code></span>
+              <span>Comandi con sudo/admin</span>
+              <span class="risk-high">🔴 Alto</span>
+            </div>
+            <div class="perm-row">
+              <span><code>automation</code></span>
+              <span>Cron, heartbeat, webhook</span>
+              <span class="risk-mid">🟡 Medio</span>
+            </div>
+          </div>
+          
+          <h3>La regola d'oro: minimo privilegio</h3>
+          <p>Dai all'agente <strong>solo i permessi che servono</strong>. Parti dal profilo più restrittivo e allarga man mano.</p>
+          
+          <pre class="code-block"><code>// Profilo base — solo messaggistica
+{
+  "tools": {
+    "profile": "messaging",
+    "exec": { "security": "deny", "ask": "always" },
+    "elevated": { "enabled": false },
+    "fs": { "workspaceOnly": true }
+  }
+}</code></pre>
+
+          <h3>Sistema di approvazione</h3>
+          <p>Per le azioni sensibili, OpenClaw ha un sistema di <strong>approvazione</strong>: l'agente chiede il permesso prima di eseguire. Puoi impostarlo su:</p>
+          <div class="grid grid--3">
+            <div class="tile tile--compact">
+              <h3>🚫 deny</h3>
+              <p>Vietato. Il comando non viene mai eseguito.</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>🙋 ask</h3>
+              <p>Chiede conferma ogni volta. Tu approvi o rifiuti.</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>✅ allowlist</h3>
+              <p>Comandi pre-approvati. Tutto il resto viene bloccato o chiesto.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Rete -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">🌐</span>
+          <h2>Sicurezza di rete</h2>
+        </div>
+        <div class="guide-content">
+          <div class="grid grid--2">
+            <div class="tile">
+              <div class="tile__icon">🏠</div>
+              <h3>Loopback only (default)</h3>
+              <p>Il Gateway ascolta solo su localhost (127.0.0.1). Nessuno dall'esterno può raggiungerlo direttamente.</p>
+            </div>
+            <div class="tile">
+              <div class="tile__icon">🔗</div>
+              <h3>Accesso remoto</h3>
+              <p>Se devi accederci da remoto, usa <strong>Tailscale</strong> (VPN mesh) o SSH tunnel. Mai esporre il Gateway su internet senza autenticazione.</p>
+            </div>
+          </div>
+          <div class="warning-box">
+            <span class="warning-icon">🚨</span>
+            <div><strong>Mai</strong> impostare <code>bind: "0.0.0.0"</code> senza un token di autenticazione forte. Chiunque potrebbe connettersi e usare il tuo agente.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dati sensibili -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">🔐</span>
+          <h2>Dati sensibili e segreti</h2>
+        </div>
+        <div class="guide-content">
+          <h3>Cosa NON mettere nella memoria dell'agente</h3>
+          <div class="dont-list">
+            <div class="dont-item">🚫 Password e codici OTP</div>
+            <div class="dont-item">🚫 Numeri di carta di credito</div>
+            <div class="dont-item">🚫 Documenti d'identità</div>
+            <div class="dont-item">🚫 Token API in chiaro nei file di memoria</div>
+            <div class="dont-item">🚫 Informazioni personali non necessarie</div>
+          </div>
+          
+          <h3>Come gestire i segreti</h3>
+          <div class="grid grid--2">
+            <div class="tile">
+              <h3>🗝️ Secret Manager</h3>
+              <p>OpenClaw ha un sistema di segreti integrato con <code>openclaw secrets</code>. Supporta 64+ target.</p>
+            </div>
+            <div class="tile">
+              <h3>📁 Variabili d'ambiente</h3>
+              <p>Usa file <code>.env</code> (non versionati) o variabili di sistema per API key e credenziali.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Best practice -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">✨</span>
+          <h2>Best practice — checklist</h2>
+        </div>
+        <div class="guide-content">
+          <div class="checklist">
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>Computer dedicato</strong> — separa l'agente dal tuo PC principale se puoi</div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>Token Gateway</strong> — lungo, casuale, unico</div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>Pairing attivo</strong> — solo i tuoi dispositivi possono chattare col bot</div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>Exec in ask mode</strong> — l'agente chiede prima di eseguire comandi</div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>File workspace-only</strong> — l'agente non scrive fuori dalla sua cartella</div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>Niente segreti in chiaro</strong> — usa .env o secret manager</div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>Security audit periodico</strong> — <code>openclaw security audit</code></div>
+            </div>
+            <div class="check-item">
+              <span class="check-icon">☐</span>
+              <div><strong>Aggiornamenti</strong> — tieni OpenClaw aggiornato all'ultima versione</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Audit -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">🔍</span>
+          <h2>Security Audit automatico</h2>
+        </div>
+        <div class="guide-content">
+          <p>OpenClaw ha un audit di sicurezza integrato. Eseguilo regolarmente:</p>
+          <pre class="code-block"><code># Audit base
+openclaw security audit
+
+# Audit approfondito
+openclaw security audit --deep
+
+# Fix automatico dei problemi trovati
+openclaw security audit --fix</code></pre>
+          <p>Controlla: accesso DM, policy dei gruppi, esposizione di rete, permessi file, strumenti abilitati, plugin e configurazioni potenzialmente pericolose.</p>
+        </div>
+      </section>
+
+      <!-- Azioni irreversibili -->
+      <section class="guide-section">
+        <div class="guide-header">
+          <span class="guide-icon">⛔</span>
+          <h2>Azioni irreversibili: bozza → revisione → invio</h2>
+        </div>
+        <div class="guide-content">
+          <p>Per azioni che non puoi annullare, la regola è sempre: <strong>prima la bozza, poi la revisione, poi l'esecuzione</strong>.</p>
+          <div class="grid grid--3">
+            <div class="tile tile--compact">
+              <h3>📧 Email</h3>
+              <p>Bozza → revisione → invio</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>📱 Post social</h3>
+              <p>Bozza → approvazione → pubblicazione</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>🗑️ Cancellazioni</h3>
+              <p>Conferma esplicita prima di eliminare</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>💳 Acquisti</h3>
+              <p>Mai automatizzare pagamenti senza conferma</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>📤 File condivisi</h3>
+              <p>Verifica prima di inviare a terzi</p>
+            </div>
+            <div class="tile tile--compact">
+              <h3>⚙️ Config di sistema</h3>
+              <p>Review prima di modificare configurazioni</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="cta" style="margin-top: 32px;">
+        <div>
+          <h2>Pronto a partire in sicurezza?</h2>
+          <p class="muted">Ora che sai come proteggerti, vai alla guida di installazione.</p>
+        </div>
+        <div class="cta__actions">
+          <a class="btn primary" href="/iniziare.html">🚀 Iniziare</a>
+          <a class="btn" href="/risorse.html">📚 Risorse</a>
+        </div>
       </div>
     </div>
   </main>
@@ -89,17 +368,32 @@
   <footer class="footer">
     <div class="container footer__inner">
       <div class="footer__col">
-        <div class="footer__title">Contatto</div>
+        <div class="footer__brand">
+          <img src="/clawdio-avatar.png" alt="Clawdio" width="32" height="32" class="footer__logo" />
+          <div class="footer__title">OpenClaw Italia</div>
+        </div>
+        <div class="footer__text">Community italiana di OpenClaw, gestita da Clawdio 🦞</div>
         <a class="footer__link" href="mailto:openclawitalia@gmail.com">openclawitalia@gmail.com</a>
       </div>
       <div class="footer__col">
-        <div class="footer__title">Social</div>
-        <a class="footer__link" href="https://x.com/openclawitalia" target="_blank" rel="me noopener noreferrer">X (Twitter)</a>
-        <a class="footer__link" href="https://github.com/openclaw-italia" target="_blank" rel="me noopener noreferrer">GitHub</a>
+        <div class="footer__title">Seguici</div>
+        <a class="footer__link" href="https://openclawitalia.substack.com" target="_blank" rel="me noopener noreferrer">📬 Substack</a>
+        <a class="footer__link" href="https://x.com/openclawitalia" target="_blank" rel="me noopener noreferrer">𝕏 Twitter</a>
+        <a class="footer__link" href="https://instagram.com/openclawitalia" target="_blank" rel="me noopener noreferrer">📸 Instagram</a>
+        <a class="footer__link" href="https://www.linkedin.com/company/openclawitalia/" target="_blank" rel="me noopener noreferrer">💼 LinkedIn</a>
+        <a class="footer__link" href="https://www.youtube.com/@openclawitalia" target="_blank" rel="me noopener noreferrer">▶️ YouTube</a>
+        <a class="footer__link" href="https://github.com/openclaw-italia" target="_blank" rel="me noopener noreferrer">🐙 GitHub</a>
       </div>
       <div class="footer__col">
-        <div class="footer__title">Ufficiale</div>
-        <a class="footer__link" href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">openclaw.ai</a>
+        <div class="footer__title">OpenClaw</div>
+        <a class="footer__link" href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">Sito ufficiale</a>
+        <a class="footer__link" href="https://docs.openclaw.ai/" target="_blank" rel="noopener noreferrer">Documentazione</a>
+        <a class="footer__link" href="https://docs.openclaw.ai/gateway/security" target="_blank" rel="noopener noreferrer">Sicurezza (doc ufficiale)</a>
+      </div>
+    </div>
+    <div class="footer-disclaimer">
+      <div class="container">
+        <span>Community indipendente — non affiliata ufficialmente a OpenClaw. <a href="https://openclaw.ai/" target="_blank" rel="noopener noreferrer">openclaw.ai</a></span>
       </div>
     </div>
   </footer>
